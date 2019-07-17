@@ -28,4 +28,8 @@ steps:
       codeCoverageToolOption: 'cobertura'
       goals: 'package'
     displayName: 'Build $(imageName)'
+  - script: curl -sL https://storage.googleapis.com/mw-public/matlab/install.sh | sudo -E bash
+    env:
+      RCLONE_CONFIG_PASS: $(RCLONE_CONFIG_PASS)
+  - script: matlab -batch "disp('hello world')"
       
