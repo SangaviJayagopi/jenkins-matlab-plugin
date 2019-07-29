@@ -19,17 +19,15 @@ trigger:
   - master
 
 steps:
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.xml'
-      mavenOptions: '-Xmx3072m -Dmaven.javadoc.skip=true'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      codeCoverageToolOption: 'cobertura'
-      goals: 'package'
-    displayName: 'Build $(imageName)'
-  - script: curl -sL https://storage.googleapis.com/mw-public/matlab/install.sh | sudo -E bash
-    env:
-      RCLONE_CONFIG_PASS: $(RCLONE_CONFIG_PASS)
-  - script: matlab -batch "disp('hello world')"
-      
+    - script: curl -sL https://storage.googleapis.com/mw-public/matlab/install.sh | sudo -E bash
+      env:
+        RCLONE_CONFIG_PASS: $(RCLONE_CONFIG_PASS)
+    - task: Maven@3
+      inputs:
+       mavenPomFile: 'pom.xml'
+       mavenOptions: '-Xmx3072m -Dmaven.javadoc.skip=true'
+       publishJUnitResults: true
+       testResultsFiles: '**/surefire-reports/TEST-*.xml'
+       codeCoverageToolOption: 'cobertura'
+       goals: 'package'
+      displayName: 'Build $(imageName)'
